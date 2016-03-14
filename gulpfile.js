@@ -45,8 +45,8 @@ const paths = {
       "dest": "./dist/assets"
    },
    "watch": {
-      "html": ["./src/index.html", "./src/app.html"],
-      "sass": ["./src/scss/**/*.scss"],
+      "html": ["./src/index.html"],
+      "sass": ["./src/css/**/*.scss"],
       "templates": ["./src/templates/**.html"]
    },
    "clean": "./dist/*"
@@ -231,9 +231,9 @@ gulp.task("compress", function() { return compress() });
 
 // the file change watchers & watchify
 gulp.task("watch", function() {
-   gulp.watch(paths.watch.html, ["html"]).on("change", logger);
-   gulp.watch(paths.watch.sass, ["sass"]).on("change", logger);
-   gulp.watch(paths.watch.templates, ["templates"]).on("change", logger);
+   gulp.watch(paths.watch.html, ["html"]).on("error", notifyError).on("change", logger);
+   gulp.watch(paths.watch.sass, ["sass"]).on("error", notifyError).on("change", logger);
+   gulp.watch(paths.watch.templates, ["templates"]).on("error", notifyError).on("change", logger);
    return compileAndWatch();
 });
 

@@ -19,6 +19,7 @@ const gsass = require("gulp-sass");
 const cleanCSS = require("gulp-clean-css");
 const concat = require("gulp-concat");
 const merge = require("merge-stream");
+var jshint = require("gulp-jshint");
 
 const paths = {
    "config":   "./config/development",
@@ -155,6 +156,17 @@ function compileTemplates(){
 }
 
 /**
+ * linting for JavaScript sources
+ */
+function lint() {
+   return gulp.src("./src/js/**.js")
+      .pipe(jshint({
+         esversion: 6
+      }))
+      .pipe(jshint.reporter("jshint-stylish"));
+};
+
+/**
  * get a new browserify module bundler for javascript modules.
  * before bundling everything together, we transform ES6 input files to
  * widely supported ES5 javascript with babel / babelify.
@@ -203,8 +215,9 @@ function compile() {
 function compileAndWatch() {
    const wtf = watchify(getBrowserify())
       .on("update", function(ids) {
+         lint();
          console.log("Watchify changes:", ids.join(", "));
-         bundle(wtf)
+         bundle(wtf);
       }).on("log", function(message) {
          console.log("Watchify completed:", message);
       });
@@ -227,6 +240,7 @@ gulp.task("html", function() { return html() });
 gulp.task("sass", function() { return sass() });
 gulp.task("templates", function() { return compileTemplates() });
 gulp.task("compile", function() { return compile() });
+gulp.task("lint", function() { return lint() });
 gulp.task("compress", function() { return compress() });
 
 // the file change watchers & watchify

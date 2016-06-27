@@ -19,7 +19,7 @@ const gsass = require("gulp-sass");
 const cleanCSS = require("gulp-clean-css");
 const concat = require("gulp-concat");
 const merge = require("merge-stream");
-var jshint = require("gulp-jshint");
+const jshint = require("gulp-jshint");
 
 const paths = {
    "config":   "./config/development",

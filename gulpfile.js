@@ -175,6 +175,8 @@ function getBrowserify() {
    return browserify({
       entries: paths.src.script,
       debug: true,
+      cache: {},
+      packageCache: {},
       extensions: [".js"]
    })
    .require(paths.config, {"expose": "config"})
